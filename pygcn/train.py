@@ -1,6 +1,8 @@
+
 from __future__ import division
 from __future__ import print_function
 
+import os
 import time
 import argparse
 import numpy as np
@@ -9,8 +11,11 @@ import torch
 import torch.nn.functional as F
 import torch.optim as optim
 
-from pygcn.utils import load_data, accuracy
-from pygcn.models import GCN
+from utils import load_data, accuracy
+from models import GCN
+
+data_path = 'D:\\Study\\GitHub_codes\\pygcn\\data\\cora\\'
+os.chdir('D:\\Study\\GitHub_codes\\pygcn\\pygcn')
 
 # Training settings
 parser = argparse.ArgumentParser()
@@ -19,7 +24,7 @@ parser.add_argument('--no-cuda', action='store_true', default=False,
 parser.add_argument('--fastmode', action='store_true', default=False,
                     help='Validate during training pass.')
 parser.add_argument('--seed', type=int, default=42, help='Random seed.')
-parser.add_argument('--epochs', type=int, default=200,
+parser.add_argument('--epochs', type=int, default=10,
                     help='Number of epochs to train.')
 parser.add_argument('--lr', type=float, default=0.01,
                     help='Initial learning rate.')
@@ -39,7 +44,7 @@ if args.cuda:
     torch.cuda.manual_seed(args.seed)
 
 # Load data
-adj, features, labels, idx_train, idx_val, idx_test = load_data()
+adj, features, labels, idx_train, idx_val, idx_test = load_data(path=data_path)
 
 # Model and optimizer
 model = GCN(nfeat=features.shape[1],
